@@ -1,19 +1,13 @@
 import { useAppDispatch, useAppSelector } from '../../store/hooks';
-import { setActiveCases, setNumberOfUsers } from '../../store/calculatorSlice';
+import { setActiveCases } from '../../store/calculatorSlice';
 
 export const InputPanel = () => {
   const dispatch = useAppDispatch();
   const activeCases = useAppSelector((state) => state.calculator.activeCasesPerYear);
-  const numberOfUsers = useAppSelector((state) => state.calculator.numberOfUsers);
 
   const handleCasesChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = parseInt(e.target.value) || 0;
     dispatch(setActiveCases(value));
-  };
-
-  const handleUsersChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = parseInt(e.target.value) || 0;
-    dispatch(setNumberOfUsers(value));
   };
 
   return (
@@ -32,24 +26,10 @@ export const InputPanel = () => {
           placeholder="Enter number of cases"
           className="cases-input"
         />
+        <p className="helper-text">
+          All other assumptions are pre-filled using Align's benchmark data from law firm examples.
+        </p>
       </div>
-      <div className="input-group">
-        <label htmlFor="number-of-users">
-          How many users will use Align?
-        </label>
-        <input
-          id="number-of-users"
-          type="number"
-          min="0"
-          value={numberOfUsers || ''}
-          onChange={handleUsersChange}
-          placeholder="Enter number of users"
-          className="cases-input"
-        />
-      </div>
-      <p className="helper-text">
-        All other assumptions are pre-filled using Align's benchmark data from law firm examples.
-      </p>
     </div>
   );
 };

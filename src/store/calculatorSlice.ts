@@ -3,7 +3,6 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 export interface CalculatorState {
   // User Input
   activeCasesPerYear: number;
-  numberOfUsers: number;
 
   // Case Composition
   bindersPerCase: number;
@@ -34,9 +33,8 @@ export interface CalculatorState {
   attorneyTimeSaved: number;
   courierReduction: number;
 
-  // Adoption & Cost
+  // Adoption
   adoptionRate: number;
-  alignCostPerUser: number;
 
   // UI State
   showAssumptions: boolean;
@@ -45,7 +43,6 @@ export interface CalculatorState {
 const initialState: CalculatorState = {
   // User Input
   activeCasesPerYear: 0,
-  numberOfUsers: 0,
 
   // Case Composition (annual rates)
   bindersPerCase: 12, // Binders created per case per year
@@ -76,9 +73,8 @@ const initialState: CalculatorState = {
   attorneyTimeSaved: 1.0,
   courierReduction: 0.90,
 
-  // Adoption & Cost
+  // Adoption
   adoptionRate: 0.70,
-  alignCostPerUser: 1500,
 
   // UI State
   showAssumptions: false,
@@ -90,9 +86,6 @@ const calculatorSlice = createSlice({
   reducers: {
     setActiveCases: (state, action: PayloadAction<number>) => {
       state.activeCasesPerYear = action.payload;
-    },
-    setNumberOfUsers: (state, action: PayloadAction<number>) => {
-      state.numberOfUsers = action.payload;
     },
     updateAssumption: (
       state,
@@ -110,7 +103,6 @@ const calculatorSlice = createSlice({
 
 export const {
   setActiveCases,
-  setNumberOfUsers,
   updateAssumption,
   toggleAssumptions,
   resetToDefaults,

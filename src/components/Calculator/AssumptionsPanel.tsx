@@ -210,7 +210,7 @@ export const AssumptionsPanel = () => {
           </div>
 
           <div className="assumption-section">
-            <h3>Adoption & Cost</h3>
+            <h3>Adoption</h3>
             <AssumptionField
               label="Adoption rate"
               value={calc.adoptionRate * 100}
@@ -218,12 +218,6 @@ export const AssumptionsPanel = () => {
               suffix="%"
               step={1}
               isPercentage={true}
-            />
-            <AssumptionField
-              label="Align cost per user (annual)"
-              value={calc.alignCostPerUser}
-              fieldKey="alignCostPerUser"
-              prefix="$"
             />
           </div>
         </div>

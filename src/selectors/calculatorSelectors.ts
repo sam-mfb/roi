@@ -96,24 +96,13 @@ export const selectAnnualTotalSavings = createSelector(
 );
 
 /**
- * Total Align annual cost
- * = Number of users × Cost per user
+ * Total annual benefit
+ * = Annual savings from all sources (hard costs + monetized labor)
  */
-export const selectAlignAnnualCost = createSelector(
-  [selectCalculator],
-  (calc) => {
-    return calc.numberOfUsers * calc.alignCostPerUser;
-  }
-);
-
-/**
- * Net annual benefit
- * = Annual savings - Align cost
- */
-export const selectNetAnnualBenefit = createSelector(
-  [selectAnnualTotalSavings, selectAlignAnnualCost],
-  (annualSavings, alignCost) => {
-    return annualSavings - alignCost;
+export const selectTotalAnnualBenefit = createSelector(
+  [selectAnnualTotalSavings],
+  (annualSavings) => {
+    return annualSavings;
   }
 );
 
@@ -126,13 +115,13 @@ export const selectResults = createSelector(
     selectAnnualParalegalHoursSaved,
     selectAnnualAttorneyBillableHoursRecovered,
     selectAnnualTotalSavings,
-    selectNetAnnualBenefit,
+    selectTotalAnnualBenefit,
   ],
-  (hardCostSavings, paralegalHours, attorneyHours, totalSavings, netBenefit) => ({
+  (hardCostSavings, paralegalHours, attorneyHours, totalSavings, totalBenefit) => ({
     hardCostSavings,
     paralegalHours,
     attorneyHours,
     totalSavings,
-    netBenefit,
+    totalBenefit,
   })
 );

@@ -27,10 +27,10 @@ export const ResultsPanel = () => {
       suffix: 'hours',
     },
     {
-      label: 'Net Annual Benefit',
-      value: formatCurrency(results.netBenefit),
-      description: 'Total value after Align costs',
-      className: results.netBenefit >= 0 ? 'metric-card highlight positive' : 'metric-card highlight negative',
+      label: 'Total Annual Benefit',
+      value: formatCurrency(results.totalBenefit),
+      description: 'Total annual value generated from all savings',
+      className: 'metric-card highlight positive',
     },
   ];
 
