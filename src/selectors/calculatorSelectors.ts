@@ -85,6 +85,26 @@ export const selectAnnualAttorneyBillableHoursRecovered = createSelector(
 );
 
 /**
+ * Dollar value of paralegal hours saved
+ */
+export const selectParalegalHoursValue = createSelector(
+  [selectAnnualParalegalHoursSaved, selectCalculator],
+  (paralegalHours, calc) => {
+    return paralegalHours * calc.paralegalRate;
+  }
+);
+
+/**
+ * Dollar value of attorney hours recovered
+ */
+export const selectAttorneyHoursValue = createSelector(
+  [selectAnnualAttorneyBillableHoursRecovered, selectCalculator],
+  (attorneyHours, calc) => {
+    return attorneyHours * calc.attorneyRate;
+  }
+);
+
+/**
  * Annual total savings (hard costs + monetized labor)
  * Note: bindersPerCase represents the annual rate (binders created per case per year)
  */
@@ -113,14 +133,18 @@ export const selectResults = createSelector(
   [
     selectAnnualHardCostSavings,
     selectAnnualParalegalHoursSaved,
+    selectParalegalHoursValue,
     selectAnnualAttorneyBillableHoursRecovered,
+    selectAttorneyHoursValue,
     selectAnnualTotalSavings,
     selectTotalAnnualBenefit,
   ],
-  (hardCostSavings, paralegalHours, attorneyHours, totalSavings, totalBenefit) => ({
+  (hardCostSavings, paralegalHours, paralegalValue, attorneyHours, attorneyValue, totalSavings, totalBenefit) => ({
     hardCostSavings,
     paralegalHours,
+    paralegalValue,
     attorneyHours,
+    attorneyValue,
     totalSavings,
     totalBenefit,
   })

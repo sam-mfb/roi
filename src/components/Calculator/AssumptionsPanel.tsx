@@ -79,21 +79,25 @@ export const AssumptionsPanel = () => {
               label="Binders created per case per year"
               value={calc.bindersPerCase}
               fieldKey="bindersPerCase"
+              description="Annual binder production rate per active case (multiplied by cases/year for total volume)"
             />
             <AssumptionField
               label="Copies per binder"
               value={calc.copiesPerBinder}
               fieldKey="copiesPerBinder"
+              description="Number of physical copies produced for each binder (multiplies print, materials, shipping, storage costs)"
             />
             <AssumptionField
               label="Pages per binder"
               value={calc.pagesPerBinder}
               fieldKey="pagesPerBinder"
+              description="Pages per copy (total pages printed = pages × copies × revisions)"
             />
             <AssumptionField
               label="Revisions per binder"
               value={calc.revisionsPerBinder}
               fieldKey="revisionsPerBinder"
+              description="Number of times binder content is updated/reprinted (multiplies paralegal revision work and reprint costs)"
             />
           </div>
 
@@ -105,12 +109,14 @@ export const AssumptionsPanel = () => {
               fieldKey="printCostPerPage"
               prefix="$"
               step={0.01}
+              description="Per page per copy (multiplied by pages × copies × (1 + revisions) for total print cost)"
             />
             <AssumptionField
               label="Binder materials (tabs, dividers, hardware)"
               value={calc.binderMaterials}
               fieldKey="binderMaterials"
               prefix="$"
+              description="Per copy cost for physical binder components (multiplied by copies per binder)"
             />
           </div>
 
@@ -122,6 +128,7 @@ export const AssumptionsPanel = () => {
               fieldKey="paralegalRate"
               prefix="$"
               suffix="/hr"
+              description="Used to calculate cost savings from paralegal time freed (multiplied by hours saved)"
             />
             <AssumptionField
               label="Attorney net billable rate"
@@ -129,7 +136,7 @@ export const AssumptionsPanel = () => {
               fieldKey="attorneyRate"
               prefix="$"
               suffix="/hr"
-              description="Billable rate minus avg cost per attorney"
+              description="Net value per hour of billable work (billable rate minus cost). Used to value recovered attorney time."
             />
           </div>
 
@@ -141,6 +148,7 @@ export const AssumptionsPanel = () => {
               fieldKey="paralegalBuildHours"
               suffix="hrs"
               step={0.1}
+              description="Time to create all copies of one binder initially (not multiplied by copies - all made together)"
             />
             <AssumptionField
               label="Paralegal hours per revision"
@@ -148,6 +156,7 @@ export const AssumptionsPanel = () => {
               fieldKey="paralegalRevisionHours"
               suffix="hrs"
               step={0.1}
+              description="Time per revision to update all copies (multiplied by revisions per binder)"
             />
           </div>
 
@@ -157,12 +166,14 @@ export const AssumptionsPanel = () => {
               label="Shipments per binder copy"
               value={calc.shipmentsPerBinder}
               fieldKey="shipmentsPerBinder"
+              description="Number of courier shipments per copy (total shipments = shipments × copies)"
             />
             <AssumptionField
               label="Shipping cost per shipment"
               value={calc.shippingCostPerShipment}
               fieldKey="shippingCostPerShipment"
               prefix="$"
+              description="Cost per courier delivery (multiplied by shipments × copies)"
             />
             <AssumptionField
               label="Storage/destruction cost per binder copy"
@@ -170,7 +181,7 @@ export const AssumptionsPanel = () => {
               fieldKey="storageCost"
               prefix="$"
               step={0.1}
-              description="50% stored @ $3/yr, 50% destroyed @ $2"
+              description="Annual cost per copy (blended: 50% stored @ $3/yr, 50% destroyed @ $2)"
             />
           </div>
 
@@ -183,6 +194,7 @@ export const AssumptionsPanel = () => {
               suffix="%"
               step={1}
               isPercentage={true}
+              description="Percentage of initial build time saved with Align (multiplied by build hours × paralegal rate for cost savings)"
             />
             <AssumptionField
               label="Paralegal revision time reduced"
@@ -191,6 +203,7 @@ export const AssumptionsPanel = () => {
               suffix="%"
               step={1}
               isPercentage={true}
+              description="Percentage of revision time saved (reduces both paralegal cost and print costs since fewer pages reprinted)"
             />
             <AssumptionField
               label="Attorney time saved per case"
@@ -198,6 +211,7 @@ export const AssumptionsPanel = () => {
               fieldKey="attorneyTimeSaved"
               suffix="hrs"
               step={0.1}
+              description="Hours per case per year freed from admin work for billable activities (allocated across binders, multiplied by net billable rate)"
             />
             <AssumptionField
               label="Courier shipments avoided"
@@ -206,6 +220,7 @@ export const AssumptionsPanel = () => {
               suffix="%"
               step={1}
               isPercentage={true}
+              description="Percentage of shipments eliminated via digital delivery (multiplied by shipments × cost per shipment × copies)"
             />
           </div>
 
@@ -218,6 +233,7 @@ export const AssumptionsPanel = () => {
               suffix="%"
               step={1}
               isPercentage={true}
+              description="Percentage of active cases using Align (scales all benefits - e.g., 70% adoption on 100 cases = 70 cases worth of savings)"
             />
           </div>
         </div>

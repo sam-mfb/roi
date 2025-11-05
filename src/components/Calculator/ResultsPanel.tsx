@@ -7,7 +7,7 @@ export const ResultsPanel = () => {
 
   const metrics = [
     {
-      label: 'Annual Hard Cost Savings',
+      label: 'Hard Cost Savings',
       value: formatCurrency(results.hardCostSavings),
       description: 'Direct cost reductions in printing, shipping, and materials',
       className: 'metric-card positive',
@@ -18,6 +18,7 @@ export const ResultsPanel = () => {
       description: 'Paralegal time saved (cost reduction)',
       className: 'metric-card positive',
       suffix: 'hours',
+      subValue: formatCurrency(results.paralegalValue),
     },
     {
       label: 'Increased Billable Hours',
@@ -25,9 +26,10 @@ export const ResultsPanel = () => {
       description: 'Attorney time freed for billable work (revenue opportunity)',
       className: 'metric-card positive',
       suffix: 'hours',
+      subValue: formatCurrency(results.attorneyValue),
     },
     {
-      label: 'Total Annual Benefit',
+      label: 'Total Benefit',
       value: formatCurrency(results.totalBenefit),
       description: 'Total annual value generated from all savings',
       className: 'metric-card highlight positive',
@@ -36,7 +38,7 @@ export const ResultsPanel = () => {
 
   return (
     <div className="results-panel">
-      <h2>Your Results</h2>
+      <h2>Annual Results</h2>
       <div className="metrics-grid">
         {metrics.map((metric, index) => (
           <div key={index} className={metric.className}>
@@ -44,6 +46,7 @@ export const ResultsPanel = () => {
             <div className="metric-value">
               {metric.value}
               {metric.suffix && <span className="metric-suffix"> {metric.suffix}</span>}
+              {metric.subValue && <div className="metric-subvalue">({metric.subValue})</div>}
             </div>
             <div className="metric-description">{metric.description}</div>
           </div>

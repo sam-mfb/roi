@@ -142,6 +142,13 @@
   color: #666;
 }
 
+.metric-subvalue {
+  font-size: 1.2rem;
+  font-weight: normal;
+  color: #666;
+  margin-top: 0.25rem;
+}
+
 .metric-description {
   font-size: 0.85rem;
   color: #666;
