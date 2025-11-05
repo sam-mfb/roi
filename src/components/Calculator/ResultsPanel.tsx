@@ -38,13 +38,6 @@ export const ResultsPanel = () => {
       description: 'Return on investment percentage',
       className: results.roi >= 0 ? 'metric-card positive' : 'metric-card negative',
     },
-    {
-      label: 'Payback Period',
-      value: results.paybackMonths > 0 ? formatNumber(results.paybackMonths, 1) : 'N/A',
-      description: 'Months to recover your investment',
-      className: 'metric-card',
-      suffix: results.paybackMonths > 0 ? 'months' : '',
-    },
   ];
 
   return (

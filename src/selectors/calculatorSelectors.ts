@@ -178,18 +178,6 @@ export const selectROI = createSelector(
 );
 
 /**
- * Payback period in months
- * = Align cost ÷ (Annual savings ÷ 12)
- */
-export const selectPaybackMonths = createSelector(
-  [selectAnnualTotalSavings, selectAlignAnnualCost],
-  (annualSavings, alignCost) => {
-    if (annualSavings === 0) return 0;
-    return alignCost / (annualSavings / 12);
-  }
-);
-
-/**
  * Combined results selector for easy access to all key metrics
  */
 export const selectResults = createSelector(
@@ -200,15 +188,13 @@ export const selectResults = createSelector(
     selectAnnualTotalSavings,
     selectNetAnnualBenefit,
     selectROI,
-    selectPaybackMonths,
   ],
-  (hardCostSavings, paralegalHours, attorneyHours, totalSavings, netBenefit, roi, paybackMonths) => ({
+  (hardCostSavings, paralegalHours, attorneyHours, totalSavings, netBenefit, roi) => ({
     hardCostSavings,
     paralegalHours,
     attorneyHours,
     totalSavings,
     netBenefit,
     roi,
-    paybackMonths,
   })
 );
