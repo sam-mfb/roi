@@ -30,6 +30,7 @@ export const selectSavingsPerBinder = createSelector(
 
 /**
  * Annual hard cost savings (physical costs only)
+ * Note: bindersPerCase represents the annual rate (binders created per case per year)
  */
 export const selectAnnualHardCostSavings = createSelector(
   [selectCalculator],
@@ -47,6 +48,7 @@ export const selectAnnualHardCostSavings = createSelector(
 /**
  * Annual nonbillable paralegal hours saved
  * These are cost savings since paralegal time cannot be billed to clients
+ * Note: bindersPerCase represents the annual rate (binders created per case per year)
  */
 export const selectAnnualParalegalHoursSaved = createSelector(
   [selectCalculator],
@@ -62,6 +64,7 @@ export const selectAnnualParalegalHoursSaved = createSelector(
 /**
  * Annual attorney billable hours recovered
  * These hours can be redirected to billable work instead of administrative tasks
+ * Note: attorneyTimeSaved is per case per year, allocated across bindersPerCase (annual rate)
  */
 export const selectAnnualAttorneyBillableHoursRecovered = createSelector(
   [selectCalculator],
@@ -75,6 +78,7 @@ export const selectAnnualAttorneyBillableHoursRecovered = createSelector(
 
 /**
  * Annual total savings (hard costs + monetized labor)
+ * Note: bindersPerCase represents the annual rate (binders created per case per year)
  */
 export const selectAnnualTotalSavings = createSelector(
   [selectSavingsPerBinder, selectCalculator],

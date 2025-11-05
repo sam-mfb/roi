@@ -47,8 +47,8 @@ const initialState: CalculatorState = {
   activeCasesPerYear: 0,
   numberOfUsers: 0,
 
-  // Case Composition
-  bindersPerCase: 25,
+  // Case Composition (annual rates)
+  bindersPerCase: 12, // Binders created per case per year
   pagesPerBinder: 450,
   revisionsPerBinder: 3,
 

@@ -76,7 +76,7 @@ export const AssumptionsPanel = () => {
           <div className="assumption-section">
             <h3>Case Composition</h3>
             <AssumptionField
-              label="Binders per case"
+              label="Binders created per case per year"
               value={calc.bindersPerCase}
               fieldKey="bindersPerCase"
             />
