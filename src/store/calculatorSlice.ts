@@ -9,11 +9,11 @@ export interface CalculatorState {
   bindersPerCase: number;
   pagesPerBinder: number;
   revisionsPerBinder: number;
+  copiesPerBinder: number;
 
   // Production Costs
   printCostPerPage: number;
-  tabsPerBinder: number;
-  binderHardware: number;
+  binderMaterials: number;
 
   // Labor Rates
   paralegalRate: number;
@@ -51,11 +51,11 @@ const initialState: CalculatorState = {
   bindersPerCase: 12, // Binders created per case per year
   pagesPerBinder: 450,
   revisionsPerBinder: 3,
+  copiesPerBinder: 3, // Number of copies made of each binder
 
   // Production Costs
   printCostPerPage: 0.10,
-  tabsPerBinder: 8,
-  binderHardware: 6,
+  binderMaterials: 14, // Tabs, dividers, and binder hardware
 
   // Labor Rates
   paralegalRate: 65,

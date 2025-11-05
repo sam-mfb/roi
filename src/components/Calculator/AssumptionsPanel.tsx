@@ -81,6 +81,11 @@ export const AssumptionsPanel = () => {
               fieldKey="bindersPerCase"
             />
             <AssumptionField
+              label="Copies per binder"
+              value={calc.copiesPerBinder}
+              fieldKey="copiesPerBinder"
+            />
+            <AssumptionField
               label="Pages per binder"
               value={calc.pagesPerBinder}
               fieldKey="pagesPerBinder"
@@ -102,15 +107,9 @@ export const AssumptionsPanel = () => {
               step={0.01}
             />
             <AssumptionField
-              label="Tabs & dividers per binder"
-              value={calc.tabsPerBinder}
-              fieldKey="tabsPerBinder"
-              prefix="$"
-            />
-            <AssumptionField
-              label="Binder hardware"
-              value={calc.binderHardware}
-              fieldKey="binderHardware"
+              label="Binder materials (tabs, dividers, hardware)"
+              value={calc.binderMaterials}
+              fieldKey="binderMaterials"
               prefix="$"
             />
           </div>
@@ -155,7 +154,7 @@ export const AssumptionsPanel = () => {
           <div className="assumption-section">
             <h3>Logistics & Storage</h3>
             <AssumptionField
-              label="Shipments per binder"
+              label="Shipments per binder copy"
               value={calc.shipmentsPerBinder}
               fieldKey="shipmentsPerBinder"
             />
@@ -166,7 +165,7 @@ export const AssumptionsPanel = () => {
               prefix="$"
             />
             <AssumptionField
-              label="Storage/destruction cost (blended)"
+              label="Storage/destruction cost per binder copy"
               value={calc.storageCost}
               fieldKey="storageCost"
               prefix="$"

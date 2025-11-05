@@ -7,37 +7,45 @@ const selectCalculator = (state: RootState) => state.calculator;
 /**
  * Savings from Align per binder
  * Includes: paralegal time saved, attorney time saved, shipping avoided, print costs avoided
+ * Note: Physical costs (shipping, print) are multiplied by copiesPerBinder
  */
 export const selectSavingsPerBinder = createSelector(
   [selectCalculator],
   (calc) => {
-    // Paralegal time savings
+    // Paralegal time savings (labor is per binder regardless of copies - all copies created together)
     const paralegalBuildSavings = calc.paralegalRate * calc.paralegalBuildHours * calc.paralegalBuildReduction;
     const paralegalRevisionSavings = calc.paralegalRate * calc.paralegalRevisionHours * calc.revisionsPerBinder * calc.paralegalRevisionReduction;
 
     // Attorney time savings (per binder allocation from per-case savings)
     const attorneySavings = (calc.attorneyRate * calc.attorneyTimeSaved) / calc.bindersPerCase;
 
-    // Shipping cost savings
-    const shippingSavings = calc.shipmentsPerBinder * calc.shippingCostPerShipment * calc.courierReduction;
+    // Shipping cost savings (per copy - each copy gets shipped)
+    const shippingSavings = calc.shipmentsPerBinder * calc.shippingCostPerShipment * calc.courierReduction * calc.copiesPerBinder;
 
-    // Print cost savings from reduced revisions
-    const printSavings = calc.pagesPerBinder * calc.printCostPerPage * calc.revisionsPerBinder * calc.paralegalRevisionReduction;
+    // Print cost savings from reduced revisions (per copy - each copy needs pages)
+    const printSavings = calc.pagesPerBinder * calc.printCostPerPage * calc.revisionsPerBinder * calc.paralegalRevisionReduction * calc.copiesPerBinder;
 
-    return paralegalBuildSavings + paralegalRevisionSavings + attorneySavings + shippingSavings + printSavings;
+    // Materials savings (per copy - each copy needs tabs/dividers/hardware)
+    const materialsSavings = calc.binderMaterials * calc.copiesPerBinder * 0; // Currently no reduction assumed for materials
+
+    // Storage savings (per copy - each copy gets stored)
+    const storageSavings = calc.storageCost * calc.copiesPerBinder * 0; // Currently no reduction assumed for storage
+
+    return paralegalBuildSavings + paralegalRevisionSavings + attorneySavings + shippingSavings + printSavings + materialsSavings + storageSavings;
   }
 );
 
 /**
  * Annual hard cost savings (physical costs only)
  * Note: bindersPerCase represents the annual rate (binders created per case per year)
+ * Note: Physical costs are multiplied by copiesPerBinder
  */
 export const selectAnnualHardCostSavings = createSelector(
   [selectCalculator],
   (calc) => {
-    // Shipping and print costs are hard costs
-    const shippingSavingsPerBinder = calc.shipmentsPerBinder * calc.shippingCostPerShipment * calc.courierReduction;
-    const printSavingsPerBinder = calc.pagesPerBinder * calc.printCostPerPage * calc.revisionsPerBinder * calc.paralegalRevisionReduction;
+    // Shipping and print costs are hard costs (per copy)
+    const shippingSavingsPerBinder = calc.shipmentsPerBinder * calc.shippingCostPerShipment * calc.courierReduction * calc.copiesPerBinder;
+    const printSavingsPerBinder = calc.pagesPerBinder * calc.printCostPerPage * calc.revisionsPerBinder * calc.paralegalRevisionReduction * calc.copiesPerBinder;
 
     const hardCostSavingsPerBinder = shippingSavingsPerBinder + printSavingsPerBinder;
 
