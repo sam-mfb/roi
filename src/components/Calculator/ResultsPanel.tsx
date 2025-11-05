@@ -55,9 +55,6 @@ export const ResultsPanel = () => {
           </div>
         ))}
       </div>
-      <button className="download-btn" onClick={() => alert('PDF download coming soon!')}>
-        📄 Download Results as PDF
-      </button>
     </div>
   );
 };
