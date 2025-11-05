@@ -48,9 +48,9 @@ const initialState: CalculatorState = {
   activeCasesPerYear: 0,
 
   // Case Composition
-  bindersPerCase: 4,
-  pagesPerBinder: 600,
-  revisionsPerBinder: 2,
+  bindersPerCase: 25,
+  pagesPerBinder: 450,
+  revisionsPerBinder: 3,
 
   // Production Costs
   printCostPerPage: 0.10,
@@ -73,10 +73,10 @@ const initialState: CalculatorState = {
   storageCost: 2.5, // Blended average: 50% stored @ $3/yr, 50% destroyed @ $2
 
   // Align Efficiency (as decimal percentages)
-  paralegalBuildReduction: 0.60,
-  paralegalRevisionReduction: 0.80,
+  paralegalBuildReduction: 0.70,
+  paralegalRevisionReduction: 0.90,
   attorneyTimeSaved: 1.0,
-  courierReduction: 0.75,
+  courierReduction: 0.90,
 
   // Adoption & Cost
   adoptionRate: 0.70,
