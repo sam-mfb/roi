@@ -1,4 +1,4 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 export interface CalculatorState {
   // User Input
@@ -50,12 +50,12 @@ const initialState: CalculatorState = {
   copiesPerBinder: 3, // Number of copies made of each binder
 
   // Production Costs
-  printCostPerPage: 0.10,
+  printCostPerPage: 0.1,
   binderMaterials: 10, // Tabs, dividers, and binder hardware
 
   // Labor Rates
-  administrativeRate: 65,
-  attorneyRate: 450,
+  administrativeRate: 60,
+  attorneyRate: 400,
 
   // Labor Effort
   administrativeBuildHours: 2.0,
@@ -67,19 +67,19 @@ const initialState: CalculatorState = {
   storageCost: 2.5, // Blended average: 50% stored @ $3/yr, 50% destroyed @ $2
 
   // Align Efficiency (as decimal percentages)
-  administrativeTimeReduction: 0.70,
+  administrativeTimeReduction: 0.7,
   attorneyTimeSaved: 1.5,
-  physicalBindersReduction: 0.90,
+  physicalBindersReduction: 0.8,
 
   // Adoption
-  adoptionRate: 0.70,
+  adoptionRate: 0.7,
 
   // UI State
   showAssumptions: false,
 };
 
 const calculatorSlice = createSlice({
-  name: 'calculator',
+  name: "calculator",
   initialState,
   reducers: {
     setActiveCases: (state, action: PayloadAction<number>) => {
@@ -87,7 +87,10 @@ const calculatorSlice = createSlice({
     },
     updateAssumption: (
       state,
-      action: PayloadAction<{ key: keyof CalculatorState; value: number | boolean }>
+      action: PayloadAction<{
+        key: keyof CalculatorState;
+        value: number | boolean;
+      }>,
     ) => {
       const { key, value } = action.payload;
       (state[key] as number | boolean) = value;
