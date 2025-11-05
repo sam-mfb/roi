@@ -106,18 +106,6 @@ export const selectNetAnnualBenefit = createSelector(
 );
 
 /**
- * ROI percentage
- * = Net benefit ÷ Align cost × 100
- */
-export const selectROI = createSelector(
-  [selectNetAnnualBenefit, selectAlignAnnualCost],
-  (netBenefit, alignCost) => {
-    if (alignCost === 0) return 0;
-    return (netBenefit / alignCost) * 100;
-  }
-);
-
-/**
  * Combined results selector for easy access to all key metrics
  */
 export const selectResults = createSelector(
@@ -127,14 +115,12 @@ export const selectResults = createSelector(
     selectAnnualAttorneyBillableHoursRecovered,
     selectAnnualTotalSavings,
     selectNetAnnualBenefit,
-    selectROI,
   ],
-  (hardCostSavings, paralegalHours, attorneyHours, totalSavings, netBenefit, roi) => ({
+  (hardCostSavings, paralegalHours, attorneyHours, totalSavings, netBenefit) => ({
     hardCostSavings,
     paralegalHours,
     attorneyHours,
     totalSavings,
     netBenefit,
-    roi,
   })
 );

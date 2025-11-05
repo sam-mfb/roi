@@ -1,6 +1,6 @@
 import { useAppSelector } from '../../store/hooks';
 import { selectResults } from '../../selectors/calculatorSelectors';
-import { formatCurrency, formatNumber, formatPercentage } from '../../utils/formatters';
+import { formatCurrency, formatNumber } from '../../utils/formatters';
 
 export const ResultsPanel = () => {
   const results = useAppSelector(selectResults);
@@ -31,12 +31,6 @@ export const ResultsPanel = () => {
       value: formatCurrency(results.netBenefit),
       description: 'Total value after Align costs',
       className: results.netBenefit >= 0 ? 'metric-card highlight positive' : 'metric-card highlight negative',
-    },
-    {
-      label: 'ROI',
-      value: formatPercentage(results.roi, 1),
-      description: 'Return on investment percentage',
-      className: results.roi >= 0 ? 'metric-card positive' : 'metric-card negative',
     },
   ];
 
