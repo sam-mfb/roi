@@ -14,11 +14,11 @@ export const ResultsPanel = () => {
     },
     {
       label: 'Nonbillable Hours Saved',
-      value: formatNumber(results.paralegalHours, 1),
-      description: 'Paralegal time saved (cost reduction)',
+      value: formatNumber(results.administrativeHours, 1),
+      description: 'Administrative time saved by paralegals and assistants (cost reduction)',
       className: 'metric-card positive',
       suffix: 'hours',
-      subValue: formatCurrency(results.paralegalValue),
+      subValue: formatCurrency(results.administrativeValue),
     },
     {
       label: 'Increased Billable Hours',

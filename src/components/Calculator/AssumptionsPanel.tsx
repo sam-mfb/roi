@@ -52,6 +52,43 @@ export const AssumptionsPanel = () => {
   const showAssumptions = useAppSelector((state) => state.calculator.showAssumptions);
   const calc = useAppSelector((state) => state.calculator);
 
+  const handleExport = () => {
+    const exportData = {
+      exportDate: new Date().toISOString(),
+      version: '1.0',
+      assumptions: {
+        activeCasesPerYear: calc.activeCasesPerYear,
+        bindersPerCase: calc.bindersPerCase,
+        pagesPerBinder: calc.pagesPerBinder,
+        revisionsPerBinder: calc.revisionsPerBinder,
+        copiesPerBinder: calc.copiesPerBinder,
+        printCostPerPage: calc.printCostPerPage,
+        binderMaterials: calc.binderMaterials,
+        administrativeRate: calc.administrativeRate,
+        attorneyRate: calc.attorneyRate,
+        administrativeBuildHours: calc.administrativeBuildHours,
+        administrativeRevisionHours: calc.administrativeRevisionHours,
+        shipmentsPerBinder: calc.shipmentsPerBinder,
+        shippingCostPerShipment: calc.shippingCostPerShipment,
+        storageCost: calc.storageCost,
+        administrativeTimeReduction: calc.administrativeTimeReduction,
+        attorneyTimeSaved: calc.attorneyTimeSaved,
+        physicalBindersReduction: calc.physicalBindersReduction,
+        adoptionRate: calc.adoptionRate,
+      },
+    };
+
+    const blob = new Blob([JSON.stringify(exportData, null, 2)], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = `align-roi-assumptions-${new Date().toISOString().split('T')[0]}.json`;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    URL.revokeObjectURL(url);
+  };
+
   return (
     <div className="assumptions-panel">
       <div className="assumptions-header">
@@ -62,12 +99,20 @@ export const AssumptionsPanel = () => {
           {showAssumptions ? '▼' : '▶'} {showAssumptions ? 'Hide' : 'Show'} Assumptions
         </button>
         {showAssumptions && (
-          <button
-            className="reset-btn"
-            onClick={() => dispatch(resetToDefaults())}
-          >
-            Reset to Defaults
-          </button>
+          <div className="assumptions-actions">
+            <button
+              className="export-btn"
+              onClick={handleExport}
+            >
+              Export Assumptions
+            </button>
+            <button
+              className="reset-btn"
+              onClick={() => dispatch(resetToDefaults())}
+            >
+              Reset to Defaults
+            </button>
+          </div>
         )}
       </div>
 
@@ -123,12 +168,12 @@ export const AssumptionsPanel = () => {
           <div className="assumption-section">
             <h3>Labor Rates</h3>
             <AssumptionField
-              label="Paralegal hourly rate"
-              value={calc.paralegalRate}
-              fieldKey="paralegalRate"
+              label="Administrative hourly rate"
+              value={calc.administrativeRate}
+              fieldKey="administrativeRate"
               prefix="$"
               suffix="/hr"
-              description="Used to calculate cost savings from paralegal time freed (multiplied by hours saved)"
+              description="Blended cost per hour for administrative staff (paralegals, assistants). Used to calculate cost savings from admin time freed."
             />
             <AssumptionField
               label="Attorney net billable rate"
@@ -141,22 +186,22 @@ export const AssumptionsPanel = () => {
           </div>
 
           <div className="assumption-section">
-            <h3>Labor Effort (Physical Workflow)</h3>
+            <h3>Administrative Effort (Physical Workflow)</h3>
             <AssumptionField
-              label="Paralegal hours to build one binder"
-              value={calc.paralegalBuildHours}
-              fieldKey="paralegalBuildHours"
+              label="Administrative hours to build one binder"
+              value={calc.administrativeBuildHours}
+              fieldKey="administrativeBuildHours"
               suffix="hrs"
               step={0.1}
-              description="Time to create all copies of one binder initially (not multiplied by copies - all made together)"
+              description="Time for admin staff to create all copies of one binder initially (not multiplied by copies - all made together)"
             />
             <AssumptionField
-              label="Paralegal hours per revision"
-              value={calc.paralegalRevisionHours}
-              fieldKey="paralegalRevisionHours"
+              label="Administrative hours per revision"
+              value={calc.administrativeRevisionHours}
+              fieldKey="administrativeRevisionHours"
               suffix="hrs"
               step={0.1}
-              description="Time per revision to update all copies (multiplied by revisions per binder)"
+              description="Time for admin staff per revision to update all copies (multiplied by revisions per binder)"
             />
           </div>
 
@@ -188,22 +233,13 @@ export const AssumptionsPanel = () => {
           <div className="assumption-section">
             <h3>Align Efficiency Gains</h3>
             <AssumptionField
-              label="Paralegal binder build time reduced"
-              value={calc.paralegalBuildReduction * 100}
-              fieldKey="paralegalBuildReduction"
+              label="Administrative time reduced"
+              value={calc.administrativeTimeReduction * 100}
+              fieldKey="administrativeTimeReduction"
               suffix="%"
               step={1}
               isPercentage={true}
-              description="Percentage of initial build time saved with Align (multiplied by build hours × paralegal rate for cost savings)"
-            />
-            <AssumptionField
-              label="Paralegal revision time reduced"
-              value={calc.paralegalRevisionReduction * 100}
-              fieldKey="paralegalRevisionReduction"
-              suffix="%"
-              step={1}
-              isPercentage={true}
-              description="Percentage of revision time saved (reduces both paralegal cost and print costs since fewer pages reprinted)"
+              description="Percentage of administrative time saved with Align (reduces total admin hours: build + revision work by paralegals and assistants)"
             />
             <AssumptionField
               label="Attorney time saved per case"
@@ -214,13 +250,13 @@ export const AssumptionsPanel = () => {
               description="Hours per case per year freed from admin work for billable activities (allocated across binders, multiplied by net billable rate)"
             />
             <AssumptionField
-              label="Courier shipments avoided"
-              value={calc.courierReduction * 100}
-              fieldKey="courierReduction"
+              label="Physical binders avoided (going digital)"
+              value={calc.physicalBindersReduction * 100}
+              fieldKey="physicalBindersReduction"
               suffix="%"
               step={1}
               isPercentage={true}
-              description="Percentage of shipments eliminated via digital delivery (multiplied by shipments × cost per shipment × copies)"
+              description="Percentage of binders delivered digitally instead of physically (reduces all physical costs: printing, materials, shipping, storage)"
             />
           </div>
 

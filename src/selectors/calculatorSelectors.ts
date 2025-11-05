@@ -6,66 +6,68 @@ const selectCalculator = (state: RootState) => state.calculator;
 
 /**
  * Savings from Align per binder
- * Includes: paralegal time saved, attorney time saved, shipping avoided, print costs avoided
- * Note: Physical costs (shipping, print) are multiplied by copiesPerBinder
+ * Three independent efficiency gains:
+ * 1. Administrative time reduction (reduces total admin hours for paralegals/assistants)
+ * 2. Attorney time saved (hours freed for billable work)
+ * 3. Physical binders reduction (reduces all physical costs)
  */
 export const selectSavingsPerBinder = createSelector(
   [selectCalculator],
   (calc) => {
-    // Paralegal time savings (labor is per binder regardless of copies - all copies created together)
-    const paralegalBuildSavings = calc.paralegalRate * calc.paralegalBuildHours * calc.paralegalBuildReduction;
-    const paralegalRevisionSavings = calc.paralegalRate * calc.paralegalRevisionHours * calc.revisionsPerBinder * calc.paralegalRevisionReduction;
+    // 1. Administrative time savings (single percentage applied to total admin hours)
+    const totalAdminHours = calc.administrativeBuildHours + (calc.administrativeRevisionHours * calc.revisionsPerBinder);
+    const adminHoursSaved = totalAdminHours * calc.administrativeTimeReduction;
+    const adminSavings = adminHoursSaved * calc.administrativeRate;
 
-    // Attorney time savings (per binder allocation from per-case savings)
+    // 2. Attorney time savings (per binder allocation from per-case savings)
     const attorneySavings = (calc.attorneyRate * calc.attorneyTimeSaved) / calc.bindersPerCase;
 
-    // Shipping cost savings (per copy - each copy gets shipped)
-    const shippingSavings = calc.shipmentsPerBinder * calc.shippingCostPerShipment * calc.courierReduction * calc.copiesPerBinder;
+    // 3. Physical costs avoided by going digital (single percentage applied to all physical costs)
+    const initialPrintCost = calc.pagesPerBinder * calc.printCostPerPage * calc.copiesPerBinder;
+    const revisionPrintCost = calc.pagesPerBinder * calc.printCostPerPage * calc.revisionsPerBinder * calc.copiesPerBinder;
+    const materialsCost = calc.binderMaterials * calc.copiesPerBinder;
+    const shippingCost = calc.shipmentsPerBinder * calc.shippingCostPerShipment * calc.copiesPerBinder;
+    const storageCost = calc.storageCost * calc.copiesPerBinder;
 
-    // Print cost savings from reduced revisions (per copy - each copy needs pages)
-    const printSavings = calc.pagesPerBinder * calc.printCostPerPage * calc.revisionsPerBinder * calc.paralegalRevisionReduction * calc.copiesPerBinder;
+    const totalPhysicalCosts = initialPrintCost + revisionPrintCost + materialsCost + shippingCost + storageCost;
+    const physicalCostSavings = totalPhysicalCosts * calc.physicalBindersReduction;
 
-    // Materials savings (per copy - each copy needs tabs/dividers/hardware)
-    const materialsSavings = calc.binderMaterials * calc.copiesPerBinder * 0; // Currently no reduction assumed for materials
-
-    // Storage savings (per copy - each copy gets stored)
-    const storageSavings = calc.storageCost * calc.copiesPerBinder * 0; // Currently no reduction assumed for storage
-
-    return paralegalBuildSavings + paralegalRevisionSavings + attorneySavings + shippingSavings + printSavings + materialsSavings + storageSavings;
+    return adminSavings + attorneySavings + physicalCostSavings;
   }
 );
 
 /**
  * Annual hard cost savings (physical costs only)
- * Note: bindersPerCase represents the annual rate (binders created per case per year)
- * Note: Physical costs are multiplied by copiesPerBinder
+ * Physical binders reduction percentage applied to all physical costs
  */
 export const selectAnnualHardCostSavings = createSelector(
   [selectCalculator],
   (calc) => {
-    // Shipping and print costs are hard costs (per copy)
-    const shippingSavingsPerBinder = calc.shipmentsPerBinder * calc.shippingCostPerShipment * calc.courierReduction * calc.copiesPerBinder;
-    const printSavingsPerBinder = calc.pagesPerBinder * calc.printCostPerPage * calc.revisionsPerBinder * calc.paralegalRevisionReduction * calc.copiesPerBinder;
+    // Calculate total physical costs per binder
+    const initialPrintCost = calc.pagesPerBinder * calc.printCostPerPage * calc.copiesPerBinder;
+    const revisionPrintCost = calc.pagesPerBinder * calc.printCostPerPage * calc.revisionsPerBinder * calc.copiesPerBinder;
+    const materialsCost = calc.binderMaterials * calc.copiesPerBinder;
+    const shippingCost = calc.shipmentsPerBinder * calc.shippingCostPerShipment * calc.copiesPerBinder;
+    const storageCost = calc.storageCost * calc.copiesPerBinder;
 
-    const hardCostSavingsPerBinder = shippingSavingsPerBinder + printSavingsPerBinder;
+    const totalPhysicalCostsPerBinder = initialPrintCost + revisionPrintCost + materialsCost + shippingCost + storageCost;
+    const physicalCostSavingsPerBinder = totalPhysicalCostsPerBinder * calc.physicalBindersReduction;
 
-    return hardCostSavingsPerBinder * calc.bindersPerCase * calc.activeCasesPerYear * calc.adoptionRate;
+    return physicalCostSavingsPerBinder * calc.bindersPerCase * calc.activeCasesPerYear * calc.adoptionRate;
   }
 );
 
 /**
- * Annual nonbillable paralegal hours saved
- * These are cost savings since paralegal time cannot be billed to clients
- * Note: bindersPerCase represents the annual rate (binders created per case per year)
+ * Annual nonbillable administrative hours saved
+ * Administrative time reduction percentage applied to total admin hours (paralegals, assistants)
  */
-export const selectAnnualParalegalHoursSaved = createSelector(
+export const selectAnnualAdministrativeHoursSaved = createSelector(
   [selectCalculator],
   (calc) => {
-    const paralegalHoursPerBinder =
-      calc.paralegalBuildHours * calc.paralegalBuildReduction +
-      calc.paralegalRevisionHours * calc.revisionsPerBinder * calc.paralegalRevisionReduction;
+    const totalAdminHoursPerBinder = calc.administrativeBuildHours + (calc.administrativeRevisionHours * calc.revisionsPerBinder);
+    const adminHoursSavedPerBinder = totalAdminHoursPerBinder * calc.administrativeTimeReduction;
 
-    return paralegalHoursPerBinder * calc.bindersPerCase * calc.activeCasesPerYear * calc.adoptionRate;
+    return adminHoursSavedPerBinder * calc.bindersPerCase * calc.activeCasesPerYear * calc.adoptionRate;
   }
 );
 
@@ -85,12 +87,12 @@ export const selectAnnualAttorneyBillableHoursRecovered = createSelector(
 );
 
 /**
- * Dollar value of paralegal hours saved
+ * Dollar value of administrative hours saved
  */
-export const selectParalegalHoursValue = createSelector(
-  [selectAnnualParalegalHoursSaved, selectCalculator],
-  (paralegalHours, calc) => {
-    return paralegalHours * calc.paralegalRate;
+export const selectAdministrativeHoursValue = createSelector(
+  [selectAnnualAdministrativeHoursSaved, selectCalculator],
+  (adminHours, calc) => {
+    return adminHours * calc.administrativeRate;
   }
 );
 
@@ -132,17 +134,17 @@ export const selectTotalAnnualBenefit = createSelector(
 export const selectResults = createSelector(
   [
     selectAnnualHardCostSavings,
-    selectAnnualParalegalHoursSaved,
-    selectParalegalHoursValue,
+    selectAnnualAdministrativeHoursSaved,
+    selectAdministrativeHoursValue,
     selectAnnualAttorneyBillableHoursRecovered,
     selectAttorneyHoursValue,
     selectAnnualTotalSavings,
     selectTotalAnnualBenefit,
   ],
-  (hardCostSavings, paralegalHours, paralegalValue, attorneyHours, attorneyValue, totalSavings, totalBenefit) => ({
+  (hardCostSavings, administrativeHours, administrativeValue, attorneyHours, attorneyValue, totalSavings, totalBenefit) => ({
     hardCostSavings,
-    paralegalHours,
-    paralegalValue,
+    administrativeHours,
+    administrativeValue,
     attorneyHours,
     attorneyValue,
     totalSavings,

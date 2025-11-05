@@ -15,12 +15,12 @@ export interface CalculatorState {
   binderMaterials: number;
 
   // Labor Rates
-  paralegalRate: number;
+  administrativeRate: number;
   attorneyRate: number;
 
   // Labor Effort
-  paralegalBuildHours: number;
-  paralegalRevisionHours: number;
+  administrativeBuildHours: number;
+  administrativeRevisionHours: number;
 
   // Logistics & Storage
   shipmentsPerBinder: number;
@@ -28,10 +28,9 @@ export interface CalculatorState {
   storageCost: number;
 
   // Align Efficiency
-  paralegalBuildReduction: number;
-  paralegalRevisionReduction: number;
+  administrativeTimeReduction: number;
   attorneyTimeSaved: number;
-  courierReduction: number;
+  physicalBindersReduction: number;
 
   // Adoption
   adoptionRate: number;
@@ -42,36 +41,35 @@ export interface CalculatorState {
 
 const initialState: CalculatorState = {
   // User Input
-  activeCasesPerYear: 0,
+  activeCasesPerYear: 1,
 
   // Case Composition (annual rates)
   bindersPerCase: 12, // Binders created per case per year
   pagesPerBinder: 450,
-  revisionsPerBinder: 3,
+  revisionsPerBinder: 1,
   copiesPerBinder: 3, // Number of copies made of each binder
 
   // Production Costs
   printCostPerPage: 0.10,
-  binderMaterials: 14, // Tabs, dividers, and binder hardware
+  binderMaterials: 10, // Tabs, dividers, and binder hardware
 
   // Labor Rates
-  paralegalRate: 65,
+  administrativeRate: 65,
   attorneyRate: 450,
 
   // Labor Effort
-  paralegalBuildHours: 3.0,
-  paralegalRevisionHours: 1.0,
+  administrativeBuildHours: 2.0,
+  administrativeRevisionHours: 1.0,
 
   // Logistics & Storage
-  shipmentsPerBinder: 2,
+  shipmentsPerBinder: 1,
   shippingCostPerShipment: 35,
   storageCost: 2.5, // Blended average: 50% stored @ $3/yr, 50% destroyed @ $2
 
   // Align Efficiency (as decimal percentages)
-  paralegalBuildReduction: 0.70,
-  paralegalRevisionReduction: 0.90,
-  attorneyTimeSaved: 1.0,
-  courierReduction: 0.90,
+  administrativeTimeReduction: 0.70,
+  attorneyTimeSaved: 1.5,
+  physicalBindersReduction: 0.90,
 
   // Adoption
   adoptionRate: 0.70,
