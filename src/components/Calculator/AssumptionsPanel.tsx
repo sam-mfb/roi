@@ -11,9 +11,10 @@ interface AssumptionFieldProps {
   step?: number;
   description?: string;
   isPercentage?: boolean;
+  sources?: { text: string; url: string; }[];
 }
 
-const AssumptionField = ({ label, value, fieldKey, prefix, suffix, step = 1, description, isPercentage = false }: AssumptionFieldProps) => {
+const AssumptionField = ({ label, value, fieldKey, prefix, suffix, step = 1, description, isPercentage = false, sources }: AssumptionFieldProps) => {
   const dispatch = useAppDispatch();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -30,6 +31,16 @@ const AssumptionField = ({ label, value, fieldKey, prefix, suffix, step = 1, des
       <label htmlFor={fieldKey}>
         {label}
         {description && <span className="field-description">{description}</span>}
+        {sources && sources.length > 0 && (
+          <span className="field-sources">
+            Sources: {sources.map((source, idx) => (
+              <span key={idx}>
+                {idx > 0 && ', '}
+                <a href={source.url} target="_blank" rel="noopener noreferrer">{source.text}</a>
+              </span>
+            ))}
+          </span>
+        )}
       </label>
       <div className="input-with-prefix">
         {prefix && <span className="prefix">{prefix}</span>}
@@ -155,6 +166,10 @@ export const AssumptionsPanel = () => {
               prefix="$"
               step={0.01}
               description="Per page per copy (multiplied by pages × copies × (1 + revisions) for total print cost)"
+              sources={[
+                { text: "TonerBuzz", url: "https://www.tonerbuzz.com/blog/printing-costs/" },
+                { text: "RTINGS", url: "https://www.rtings.com/printer/tests/printing/cost-per-print" }
+              ]}
             />
             <AssumptionField
               label="Binder materials (tabs, dividers, hardware)"
@@ -162,6 +177,10 @@ export const AssumptionsPanel = () => {
               fieldKey="binderMaterials"
               prefix="$"
               description="Per copy cost for physical binder components (multiplied by copies per binder)"
+              sources={[
+                { text: "Walmart 3\" Binders", url: "https://www.walmart.com/browse/walmart-for-business/3-inch-binders/6735581_3020544_5093993_3859294_8518720" },
+                { text: "Staples Legal Tabs", url: "https://www.staples.com/buy/legal-exhibit-dividers-0alz03a" }
+              ]}
             />
           </div>
 
@@ -174,6 +193,10 @@ export const AssumptionsPanel = () => {
               prefix="$"
               suffix="/hr"
               description="Blended cost per hour for administrative staff (paralegals, assistants). Used to calculate cost savings from admin time freed."
+              sources={[
+                { text: "BLS Occupational Outlook", url: "https://www.bls.gov/ooh/Legal/Paralegals-and-legal-assistants.htm" },
+                { text: "BLS ECEC Benefits Data", url: "https://www.bls.gov/news.release/archives/ecec_09102024.pdf" }
+              ]}
             />
             <AssumptionField
               label="Attorney net billable rate"
@@ -182,6 +205,10 @@ export const AssumptionsPanel = () => {
               prefix="$"
               suffix="/hr"
               description="Net value per hour of billable work (billable rate minus cost). Used to value recovered attorney time."
+              sources={[
+                { text: "Clio Legal Trends Report", url: "https://www.clio.com/resources/legal-trends/" },
+                { text: "Thomson Reuters Legal Market 2025", url: "https://www.thomsonreuters.com/en-us/posts/wp-content/uploads/sites/20/2025/01/State-of-the-US-Legal-Market-Report-2025.pdf" }
+              ]}
             />
           </div>
 
@@ -219,6 +246,9 @@ export const AssumptionsPanel = () => {
               fieldKey="shippingCostPerShipment"
               prefix="$"
               description="Cost per courier delivery (multiplied by shipments × copies)"
+              sources={[
+                { text: "FedEx One Rate 2025", url: "https://www.fedex.com/content/dam/fedex/us-united-states/services/OneRate-Pricing_2025.pdf" }
+              ]}
             />
             <AssumptionField
               label="Storage/destruction cost per binder copy"
@@ -227,6 +257,11 @@ export const AssumptionsPanel = () => {
               prefix="$"
               step={0.1}
               description="Annual cost per copy (blended: 50% stored @ $3/yr, 50% destroyed @ $2)"
+              sources={[
+                { text: "Record Nations", url: "https://www.recordnations.com/resources/cost-document-storage/" },
+                { text: "EY Storage Insights", url: "https://www.ey.com/en_us/insights/forensic-integrity-services/reduce-operating-costs-by-limiting-off-site-storage-use" },
+                { text: "UVA Records Management", url: "https://recordsmanagement.virginia.edu/services-pricing" }
+              ]}
             />
           </div>
 

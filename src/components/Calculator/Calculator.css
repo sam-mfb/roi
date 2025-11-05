@@ -263,6 +263,25 @@
   margin-top: 0.25rem;
 }
 
+.field-sources {
+  display: block;
+  font-size: 0.7rem;
+  color: #007bff;
+  font-weight: normal;
+  margin-top: 0.25rem;
+}
+
+.field-sources a {
+  color: #007bff;
+  text-decoration: none;
+  border-bottom: 1px dotted #007bff;
+}
+
+.field-sources a:hover {
+  color: #0056b3;
+  border-bottom-color: #0056b3;
+}
+
 .input-with-prefix {
   display: flex;
   align-items: center;

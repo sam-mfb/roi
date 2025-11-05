@@ -50,11 +50,11 @@ const initialState: CalculatorState = {
   copiesPerBinder: 3, // Number of copies made of each binder
 
   // Production Costs
-  printCostPerPage: 0.1,
-  binderMaterials: 10, // Tabs, dividers, and binder hardware
+  printCostPerPage: 0.06,
+  binderMaterials: 14.00, // Tabs, dividers, and binder hardware
 
   // Labor Rates
-  administrativeRate: 60,
+  administrativeRate: 40,
   attorneyRate: 400,
 
   // Labor Effort
@@ -63,8 +63,8 @@ const initialState: CalculatorState = {
 
   // Logistics & Storage
   shipmentsPerBinder: 1,
-  shippingCostPerShipment: 35,
-  storageCost: 2.5, // Blended average: 50% stored @ $3/yr, 50% destroyed @ $2
+  shippingCostPerShipment: 20.00,
+  storageCost: 2.00, // Blended average: 50% stored @ $3/yr, 50% destroyed @ $2
 
   // Align Efficiency (as decimal percentages)
   administrativeTimeReduction: 0.7,
