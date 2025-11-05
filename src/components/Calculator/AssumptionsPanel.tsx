@@ -125,11 +125,12 @@ export const AssumptionsPanel = () => {
               suffix="/hr"
             />
             <AssumptionField
-              label="Attorney hourly rate"
+              label="Attorney net billable rate"
               value={calc.attorneyRate}
               fieldKey="attorneyRate"
               prefix="$"
               suffix="/hr"
+              description="Billable rate minus avg cost per attorney"
             />
           </div>
 
@@ -234,11 +235,10 @@ export const AssumptionsPanel = () => {
               isPercentage={true}
             />
             <AssumptionField
-              label="Align annual license & onboarding"
-              value={calc.alignAnnualCost}
-              fieldKey="alignAnnualCost"
+              label="Align cost per user (annual)"
+              value={calc.alignCostPerUser}
+              fieldKey="alignCostPerUser"
               prefix="$"
-              description="Amortized over 3 years"
             />
           </div>
         </div>

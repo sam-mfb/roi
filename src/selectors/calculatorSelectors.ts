@@ -105,21 +105,31 @@ export const selectAnnualHardCostSavings = createSelector(
 );
 
 /**
- * Annual labor time recovered (in hours)
+ * Annual nonbillable paralegal hours saved
+ * These are cost savings since paralegal time cannot be billed to clients
  */
-export const selectAnnualLaborHoursRecovered = createSelector(
+export const selectAnnualParalegalHoursSaved = createSelector(
   [selectCalculator],
   (calc) => {
     const paralegalHoursPerBinder =
       calc.paralegalBuildHours * calc.paralegalBuildReduction +
       calc.paralegalRevisionHours * calc.revisionsPerBinder * calc.paralegalRevisionReduction;
 
+    return paralegalHoursPerBinder * calc.bindersPerCase * calc.activeCasesPerYear * calc.adoptionRate;
+  }
+);
+
+/**
+ * Annual attorney billable hours recovered
+ * These hours can be redirected to billable work instead of administrative tasks
+ */
+export const selectAnnualAttorneyBillableHoursRecovered = createSelector(
+  [selectCalculator],
+  (calc) => {
     const attorneyHoursPerCase = calc.attorneyTimeSaved;
     const attorneyHoursPerBinder = attorneyHoursPerCase / calc.bindersPerCase;
 
-    const totalHoursPerBinder = paralegalHoursPerBinder + attorneyHoursPerBinder;
-
-    return totalHoursPerBinder * calc.bindersPerCase * calc.activeCasesPerYear * calc.adoptionRate;
+    return attorneyHoursPerBinder * calc.bindersPerCase * calc.activeCasesPerYear * calc.adoptionRate;
   }
 );
 
@@ -134,13 +144,24 @@ export const selectAnnualTotalSavings = createSelector(
 );
 
 /**
+ * Total Align annual cost
+ * = Number of users × Cost per user
+ */
+export const selectAlignAnnualCost = createSelector(
+  [selectCalculator],
+  (calc) => {
+    return calc.numberOfUsers * calc.alignCostPerUser;
+  }
+);
+
+/**
  * Net annual benefit
  * = Annual savings - Align cost
  */
 export const selectNetAnnualBenefit = createSelector(
-  [selectAnnualTotalSavings, selectCalculator],
-  (annualSavings, calc) => {
-    return annualSavings - calc.alignAnnualCost;
+  [selectAnnualTotalSavings, selectAlignAnnualCost],
+  (annualSavings, alignCost) => {
+    return annualSavings - alignCost;
   }
 );
 
@@ -149,10 +170,10 @@ export const selectNetAnnualBenefit = createSelector(
  * = Net benefit ÷ Align cost × 100
  */
 export const selectROI = createSelector(
-  [selectNetAnnualBenefit, selectCalculator],
-  (netBenefit, calc) => {
-    if (calc.alignAnnualCost === 0) return 0;
-    return (netBenefit / calc.alignAnnualCost) * 100;
+  [selectNetAnnualBenefit, selectAlignAnnualCost],
+  (netBenefit, alignCost) => {
+    if (alignCost === 0) return 0;
+    return (netBenefit / alignCost) * 100;
   }
 );
 
@@ -161,10 +182,10 @@ export const selectROI = createSelector(
  * = Align cost ÷ (Annual savings ÷ 12)
  */
 export const selectPaybackMonths = createSelector(
-  [selectAnnualTotalSavings, selectCalculator],
-  (annualSavings, calc) => {
+  [selectAnnualTotalSavings, selectAlignAnnualCost],
+  (annualSavings, alignCost) => {
     if (annualSavings === 0) return 0;
-    return calc.alignAnnualCost / (annualSavings / 12);
+    return alignCost / (annualSavings / 12);
   }
 );
 
@@ -174,15 +195,17 @@ export const selectPaybackMonths = createSelector(
 export const selectResults = createSelector(
   [
     selectAnnualHardCostSavings,
-    selectAnnualLaborHoursRecovered,
+    selectAnnualParalegalHoursSaved,
+    selectAnnualAttorneyBillableHoursRecovered,
     selectAnnualTotalSavings,
     selectNetAnnualBenefit,
     selectROI,
     selectPaybackMonths,
   ],
-  (hardCostSavings, laborHours, totalSavings, netBenefit, roi, paybackMonths) => ({
+  (hardCostSavings, paralegalHours, attorneyHours, totalSavings, netBenefit, roi, paybackMonths) => ({
     hardCostSavings,
-    laborHours,
+    paralegalHours,
+    attorneyHours,
     totalSavings,
     netBenefit,
     roi,
