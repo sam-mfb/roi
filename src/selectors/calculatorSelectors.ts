@@ -5,56 +5,6 @@ import type { RootState } from '../store/store';
 const selectCalculator = (state: RootState) => state.calculator;
 
 /**
- * Physical cost per binder
- * = (Pages × Print cost × (1 + Revisions)) + Tabs + Binder + (Shipments × ShipCost) + Storage
- */
-export const selectPhysicalCostPerBinder = createSelector(
-  [selectCalculator],
-  (calc) => {
-    const printCost = calc.pagesPerBinder * calc.printCostPerPage * (1 + calc.revisionsPerBinder);
-    const shippingCost = calc.shipmentsPerBinder * calc.shippingCostPerShipment;
-
-    return printCost + calc.tabsPerBinder + calc.binderHardware + shippingCost + calc.storageCost;
-  }
-);
-
-/**
- * Labor cost per case (for all binders in the case)
- * = Paralegal rate × (Build hours + Revisions × Revision hours) +
- *   Attorney rate × (Revision hours × Revisions + Locate hours)
- *
- * Note: This is per case, which includes multiple binders
- */
-export const selectLaborCostPerCase = createSelector(
-  [selectCalculator],
-  (calc) => {
-    const paralegalCost = calc.paralegalRate * (
-      calc.paralegalBuildHours +
-      calc.revisionsPerBinder * calc.paralegalRevisionHours
-    );
-
-    const attorneyCost = calc.attorneyRate * (
-      calc.attorneyRevisionHours * calc.revisionsPerBinder +
-      calc.attorneyLocateHours
-    );
-
-    return paralegalCost + attorneyCost;
-  }
-);
-
-/**
- * Baseline cost per binder (physical + labor allocated per binder)
- */
-export const selectBaselineCostPerBinder = createSelector(
-  [selectPhysicalCostPerBinder, selectLaborCostPerCase, selectCalculator],
-  (physicalCost, laborCostPerCase, calc) => {
-    // Labor cost is per case, so divide by binders per case to get per-binder labor cost
-    const laborPerBinder = laborCostPerCase / calc.bindersPerCase;
-    return physicalCost + laborPerBinder;
-  }
-);
-
-/**
  * Savings from Align per binder
  * Includes: paralegal time saved, attorney time saved, shipping avoided, print costs avoided
  */
@@ -75,16 +25,6 @@ export const selectSavingsPerBinder = createSelector(
     const printSavings = calc.pagesPerBinder * calc.printCostPerPage * calc.revisionsPerBinder * calc.paralegalRevisionReduction;
 
     return paralegalBuildSavings + paralegalRevisionSavings + attorneySavings + shippingSavings + printSavings;
-  }
-);
-
-/**
- * Annual baseline cost (without Align)
- */
-export const selectAnnualBaselineCost = createSelector(
-  [selectBaselineCostPerBinder, selectCalculator],
-  (costPerBinder, calc) => {
-    return costPerBinder * calc.bindersPerCase * calc.activeCasesPerYear;
   }
 );
 

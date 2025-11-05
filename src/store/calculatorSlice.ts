@@ -22,8 +22,6 @@ export interface CalculatorState {
   // Labor Effort
   paralegalBuildHours: number;
   paralegalRevisionHours: number;
-  attorneyRevisionHours: number;
-  attorneyLocateHours: number;
 
   // Logistics & Storage
   shipmentsPerBinder: number;
@@ -66,8 +64,6 @@ const initialState: CalculatorState = {
   // Labor Effort
   paralegalBuildHours: 3.0,
   paralegalRevisionHours: 1.0,
-  attorneyRevisionHours: 0.25,
-  attorneyLocateHours: 0.5,
 
   // Logistics & Storage
   shipmentsPerBinder: 2,

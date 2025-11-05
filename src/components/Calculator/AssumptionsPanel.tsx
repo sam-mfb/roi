@@ -150,20 +150,6 @@ export const AssumptionsPanel = () => {
               suffix="hrs"
               step={0.1}
             />
-            <AssumptionField
-              label="Attorney hours lost per revision"
-              value={calc.attorneyRevisionHours}
-              fieldKey="attorneyRevisionHours"
-              suffix="hrs"
-              step={0.1}
-            />
-            <AssumptionField
-              label="Attorney hours to locate/transport binders"
-              value={calc.attorneyLocateHours}
-              fieldKey="attorneyLocateHours"
-              suffix="hrs"
-              step={0.1}
-            />
           </div>
 
           <div className="assumption-section">
