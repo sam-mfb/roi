@@ -1,0 +1,17 @@
+{
+  "library": {
+    "name": "Karpi Studio",
+    "components": [
+      "./src/**/*.webflow.@(js|jsx|mjs|ts|tsx)"
+    ],
+    "description": "",
+    "id": "karpi-studio"
+  },
+  "telemetry": {
+    "global": {
+      "allowTelemetry": false,
+      "lastPrompted": 1765886879268,
+      "version": "1.9.0"
+    }
+  }
+}
