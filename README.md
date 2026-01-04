@@ -1,46 +1,110 @@
-# Getting Started with Create React App
+# ROI Calculator
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+A React-based ROI calculator component built with TypeScript, Redux Toolkit, and Vite. Designed for use as a standalone app and as a Webflow Code Component.
 
-## Available Scripts
+## Prerequisites
 
-In the project directory, you can run:
+- Node.js 18+
+- npm
 
-### `npm start`
+## Installation
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+```bash
+npm install
+```
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+## Development
 
-### `npm test`
+Start the local development server:
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+```bash
+npm run dev
+```
 
-### `npm run build`
+This starts Vite at `http://localhost:3000` with hot module replacement.
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+## Scripts
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+| Script | Description |
+|--------|-------------|
+| `npm run dev` | Start development server |
+| `npm run build` | Type-check and build for production |
+| `npm run preview` | Preview production build locally |
+| `npm run test` | Run tests with Vitest |
+| `npm run deploy` | Deploy to GitHub Pages |
+| `npm run webflow:share` | Bundle and upload to Webflow |
+| `npm run webflow:share:ci` | Bundle and upload to Webflow (CI mode) |
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+## Webflow Integration
 
-### `npm run eject`
+This project uses [Webflow Code Components](https://developers.webflow.com/code-components/introduction) to export React components to Webflow.
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+### Component Structure
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+Webflow components are defined in `*.webflow.tsx` files:
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+```
+src/components/Calculator/Calculator.webflow.tsx
+```
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+These files wrap your React components with `declareComponent()` from `@webflow/react`.
 
-## Learn More
+### Sharing to Webflow
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+#### Interactive (Browser Auth)
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+```bash
+npm run webflow:share
+```
+
+This will:
+1. Use `WEBFLOW_WORKSPACE_API_TOKEN` env variable if set
+2. Otherwise, open a browser for authentication
+
+#### With API Token
+
+Set the environment variable:
+
+```bash
+export WEBFLOW_WORKSPACE_API_TOKEN=your_token_here
+npm run webflow:share
+```
+
+#### CI/CD Pipeline
+
+For automated deployments, use the CI script with the token:
+
+```bash
+WEBFLOW_WORKSPACE_API_TOKEN=your_token npm run webflow:share:ci
+```
+
+The `:ci` variant uses `--no-input` to skip all interactive prompts.
+
+### Getting a Workspace API Token
+
+1. Go to your Webflow Workspace settings
+2. Navigate to **Integrations** > **API Access**
+3. Generate a Workspace API token
+
+## Project Structure
+
+```
+src/
+├── components/
+│   └── Calculator/
+│       ├── Calculator.tsx          # Main component
+│       ├── Calculator.webflow.tsx  # Webflow wrapper
+│       ├── InputPanel.tsx
+│       ├── ResultsPanel.tsx
+│       └── AssumptionsPanel.tsx
+├── store/                          # Redux store
+├── selectors/                      # Redux selectors
+└── utils/                          # Utility functions
+```
+
+## Configuration
+
+- `vite.config.ts` - Vite configuration
+- `vitest.config.ts` - Test configuration
+- `webflow.json` - Webflow library configuration
+- `tsconfig.json` - TypeScript configuration
