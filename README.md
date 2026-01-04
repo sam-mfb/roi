@@ -32,6 +32,7 @@ This starts Vite at `http://localhost:3000` with hot module replacement.
 | `npm run preview` | Preview production build locally |
 | `npm run test` | Run tests with Vitest |
 | `npm run deploy` | Deploy to GitHub Pages |
+| `npm run webflow:build` | Bundle for Webflow (local only) |
 | `npm run webflow:share` | Bundle and upload to Webflow |
 | `npm run webflow:share:ci` | Bundle and upload to Webflow (CI mode) |
 
