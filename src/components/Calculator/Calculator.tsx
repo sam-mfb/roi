@@ -12,14 +12,16 @@ export const Calculator = () => {
 
   return (
     <section ref={containerRef} className='calculator-section'>
-      <div className='calculator-header'>
-        <h2>Calculate Your Savings with Align</h2>
-      </div>
+      <div className='calculator-wrapper'>
+        <div className='calculator-header'>
+          <h2>Calculate Your Savings with Align</h2>
+        </div>
 
-      <div className='calculator-layout'>
-        <InputPanel />
-        <ResultsPanel />
-        <AssumptionsPanel />
+        <div className='calculator-layout'>
+          <InputPanel />
+          <ResultsPanel />
+          <AssumptionsPanel />
+        </div>
       </div>
     </section>
   );

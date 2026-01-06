@@ -1,7 +1,16 @@
 .calculator-section {
   display: flex;
   flex-direction: column;
+  padding-left: 2rem;
+  padding-right: 2rem;
+}
+
+.calculator-wrapper {
   width: 100%;
+  max-width: 74rem;
+  padding-top: var(--size--size-28, 7rem);
+  padding-bottom: var(--size--size-28, 7rem);
+  margin: 0 auto;
 }
 
 .calculator-header {
