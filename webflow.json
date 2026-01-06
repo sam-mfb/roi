@@ -1,11 +1,9 @@
 {
   "library": {
-    "name": "Karpi Studio",
-    "components": [
-      "./src/**/*.webflow.@(js|jsx|mjs|ts|tsx)"
-    ],
+    "name": "Align Code Components",
+    "components": ["./src/**/*.webflow.@(js|jsx|mjs|ts|tsx)"],
     "description": "",
-    "id": "karpi-studio"
+    "id": "align-code"
   },
   "telemetry": {
     "global": {
@@ -15,3 +13,4 @@
     }
   }
 }
+
